@@ -13,13 +13,21 @@ document.addEventListener("DOMContentLoaded", function () {
     observer.observe(el);
   });
 
-  // Contact form handling
+  // Contact/Booking form handling
   const form = document.getElementById("contactForm");
   const thankYou = document.getElementById("thankYou");
 
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+
+      const phone = document.getElementById("phone");
+      const pattern = /^(?:\+91|0)?[6-9]\d{9}$/;
+
+      if (phone && !pattern.test(phone.value)) {
+        alert("Please enter a valid Indian phone number (10 digits, with or without +91/0).");
+        return;
+      }
 
       const formData = new FormData(form);
 
@@ -33,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => {
         if (response.ok) {
           form.reset();
-          thankYou.style.display = "block";
+          if (thankYou) thankYou.style.display = "block";
         } else {
           alert("Oops! Something went wrong. Please try again.");
         }
